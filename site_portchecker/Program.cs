@@ -12,22 +12,32 @@ namespace site_portchecker
         static void Main(string[] args)
         {
 
-            IPHostEntry adresWWW = Dns.GetHostEntry("www.github.com");
+            string adres;
+            int port;
+            Console.WriteLine("PROGRAM KTORY DLA PODANEGO SERWISU WWW\nSPRAWDZA OTWARTOSC WYZNACZONEGO PORTU\n");
+            Console.WriteLine("Wpisz nazwe serwisu: ");
+            adres = Console.ReadLine();
+            Console.WriteLine("\n");
+            Console.WriteLine("Wpisz numer portu: ");
+            port = int.Parse(Console.ReadLine());
+            Console.WriteLine("\n");
+            IPHostEntry adresWWW = Dns.GetHostEntry(adres);
             IPAddress adresIP = adresWWW.AddressList[0];
             System.Net.Sockets.Socket socket = new System.Net.Sockets.Socket(System.Net.Sockets.AddressFamily.InterNetwork, System.Net.Sockets.SocketType.Stream, System.Net.Sockets.ProtocolType.Tcp);
             try
             {
-                socket.Connect(adresIP, 80);
+                socket.Connect(adresIP, port);
                 if (socket.Connected == true)
-                    Console.WriteLine("Port jest otwarty");
+                    Console.WriteLine("Port " + port + " jest otwarty");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine("Port jest zamkniety");
+                Console.WriteLine("Port " + port + " jest zamkniety");
             }
             finally
             {
                 socket.Close();
+                Console.WriteLine("\nPo nacisnieciu dowolnego klawisza program zostanie zamkniety");
             }
             Console.ReadKey();
 
